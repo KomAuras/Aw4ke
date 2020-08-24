@@ -1,0 +1,14 @@
+{
+    "name": "sea/channel-relay-bot",
+    "description": "New relay",
+    "authors": [
+        {
+            "name": "Евгений Стефаненко",
+            "email": "mixer@clarionlife.net"
+        }
+    ],
+    "require": {
+        "team-reflex/discord-php": "^4.0",
+        "vlucas/phpdotenv": "^5.1"
+    }
+}
