@@ -21,7 +21,16 @@ class MyBot
         $this->dotenv->load();
         $this->dotenv->required('token')->required();
 
-        $this->discord = new DiscordCommandClient(['token' => $_ENV['token']]);
+        $this->discord = new DiscordCommandClient([
+            'token' => $_ENV['token'],
+            'prefix' => '!'
+        ]);
+
+//        $this->discord->registerCommand('ping', function ($message) {
+//            return 'pong!';
+//        }, [
+//            'description' => 'pong!',
+//        ]);
 
         $this->discord->on('ready', function ($discord) {
             $discord->on(Event::MESSAGE_REACTION_ADD, function ($message_reaction) {
@@ -48,29 +57,23 @@ class MyBot
         $message->channel->sendMessage($text);
     }
 
-    private function Lat2ru($string)
+    public function Lat2ru($string)
     {
+        $lat = array(
+            "jesli",
+            "shch", "sh", "ch", "ca", "c", "yu", "ju", "ya", "ja", "zh", "j", "a", "b", "v", "w",
+            "g", "d", "e", "e", "z", "iy", "i", "k", "l", "m", "n",
+            "o", "p", "r", "s", "t", "u", "f", "h", "", "y", "",
+            "e", "e", "yi", "i"
+        );
         $cyr = array(
-            "Щ", "Ш", "Ч", "Ц", "Ю", "Я", "Ж", "А", "Б", "В", "В",
-            "Г", "Д", "Е", "Ё", "З", "И", "Й", "К", "Л", "М", "Н",
-            "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ь", "Ы", "Ъ",
-            "Э", "Є", "Ї", "І",
-            "щ", "ш", "ч", "ц", "ю", "я", "ж", "а", "б", "в", "в",
-            "г", "д", "е", "ё", "з", "и", "й", "к", "л", "м", "н",
+            "если",
+            "щ", "ш", "ч", "ца", "ц", "ю", "ю", "я", "я", "ж", "ж", "а", "б", "в", "в",
+            "г", "д", "е", "ё", "з", "ий", "и", "к", "л", "м", "н",
             "о", "п", "р", "с", "т", "у", "ф", "х", "ь", "ы", "ъ",
             "э", "є", "ї", "і"
         );
-        $lat = array(
-            "Shch", "Sh", "Ch", "C", "Yu", "Ya", "J", "A", "B", "V", "W",
-            "G", "D", "E", "E", "Z", "I", "y", "K", "L", "M", "N",
-            "O", "P", "R", "S", "T", "U", "F", "H", "",
-            "Y", "", "E", "E", "Yi", "I",
-            "shch", "sh", "ch", "c", "Yu", "Ya", "j", "a", "b", "v", "w",
-            "g", "d", "e", "e", "z", "i", "y", "k", "l", "m", "n",
-            "o", "p", "r", "s", "t", "u", "f", "h",
-            "", "y", "", "e", "e", "yi", "i"
-        );
-        $string = str_replace($lat, $cyr, $string);
+        $string = str_replace($lat, $cyr, strtolower($string));
         $string = str_replace("_", " ", $string);
         return ($string);
     }
@@ -98,3 +101,17 @@ class MyBot
 
 $bot = new MyBot();
 $bot->Run();
+
+/*
+$text = [
+    'dazhe w reale, tolka cherez trudnye wremena i srachiki stanowjatsa wse blizhe. jesli nebudet takowo ispytanie, to my nekogda neuznaem naskolko wse serezna.  wot jesli probombit i i wse posrutsa, i posle etogo wse eshe budut na meste, wot togda budet klasno, a jesli wse razbegutsa, to budet ponjatno, shto budushego i tak nebylo',
+    'wy ponimaete pochemu NUZHNO adoptirowatsa? i toshta bylo zajawleno 2 meseza nazad, nashet rorak, uzhe neaktualno... netykaite na eto postojano. ja sam etamu nerad, no u nas netu wybora. ili delaem kak nada, ili umeraem i wse.',
+    'Situacyja menjaetsa kazhdyi deni, i jesli postojano operatsa na infu, kotoroi 2 meseca. To mozhna swarachiwatsa. Po moemu my uzhe wse obgoeorili neskoloo raz na sobranijah. I dokumenty jesti. Po fakty kazhetsa prosto hochet igrati sam sebe i nepsritsa',
+    'etoi korpe w princype nenuzhny dazhe nalogi pohoroshemu.  zdesi takaja wozmozhnasti zarabatywati samim sebe, no neispolzuetsa. ja predstowljal sebe shto budet wse nanmnogo aktivnei i zhewei proishodit, a s perehodam, wse stalo kak u dichei',
+    'nenuzhna wozmushjatsa, ja nechego swerh jesttestwengo netrebuju. trebuju to shto i sam delaju. i posle nashego sobranie, tak nerazu nekto i nedelal nechego w public kopke. smysol mne odnomu opjati na wseh rabotati? poluchitsa kak s ally lunami, ja takoe nehochu.  wy wzroslye i golowa na plechjah jesti. ostalosi tolka podumati kak i delati probywati. za was nekto delati nechego nebudet i eto ne negativ a fakt.'
+];
+foreach ($text as $txt) {
+    echo "\n\n";
+    echo $bot->Lat2ru($txt), "\n\n";
+}
+*/
